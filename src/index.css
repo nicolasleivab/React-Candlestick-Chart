@@ -1,0 +1,19 @@
+*,
+*::after,
+*::before{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Titillium+Web&display=swap');
+
+html{
+    font-size: 62.5%; /* 10px*/
+}
+
+body{
+    font-family:  'Titillium Web' , sans-serif;
+    font-size: 1.6rem; /* 16px */
+    text-align: center;
+}
