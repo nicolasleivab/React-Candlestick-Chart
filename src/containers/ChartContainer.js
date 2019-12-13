@@ -12,15 +12,7 @@ class ChartContainer extends Component{
 
         return(
             <Auxiliar>
-                <div>
-                <input/>
-                </div>
                 <CandleStickChart/>
-                <div>
-                    <button className={styles.btngray}></button>
-                    <button className={styles.btngray}></button>
-                    <button className={styles.btngray}></button>
-                </div>
             </Auxiliar>
         );
     }
