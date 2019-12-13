@@ -1,4 +1,8 @@
-class CandleStickChart extends React.Component {
+import React, { Component } from 'react';
+import apexcharts from "react-apexcharts"
+import ReactApexChart from "react-apexcharts";
+
+class CandleStickChart extends Component {
 
     constructor(props) {
         super(props);
@@ -276,3 +280,5 @@ class CandleStickChart extends React.Component {
         );
     }
 }
+
+export default CandleStickChart

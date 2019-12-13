@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Auxiliar from '../../hoc/Auxiliar';
-import CandleStickChart from "react-apexcharts";
+import Auxiliar from '../hoc/Auxiliar/Auxiliar';
+import CandleStickChart from "../components/Candlestick/Candlestick";
 
 class ChartContainer extends Component{
     state = {
@@ -11,7 +11,6 @@ class ChartContainer extends Component{
 
         return(
             <Auxiliar>
-                <Controls/>
                 <CandleStickChart/>
             </Auxiliar>
         );
