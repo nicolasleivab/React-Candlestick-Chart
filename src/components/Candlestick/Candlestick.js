@@ -773,6 +773,45 @@ this.setState({
     console.log(this.state);
 }
 
+    componentDidMount() {
+        fetch("https://api.coincap.io/v2/candles?exchange=poloniex&interval=d1&baseId=bitcoin&quoteId=tether")
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    
+                    let coinData = result.data.slice(-100);
+
+                    coinData.forEach(function (d) {
+                        d.open = Math.round(d.open * 100) / 100;
+                        d.high = Math.round(d.high * 100) / 100;;
+                        d.low = Math.round(d.low * 100) / 100;;
+                        d.close = Math.round(d.close * 100) / 100;;
+                    });
+
+                    let candlestickFormat = coinData.map(function (d) {
+                        return {
+                            x: new Date(d.period),
+                            y: [d.open, d.high, d.low, d.close]
+                        }
+                    })
+                    console.log(candlestickFormat);
+                    this.setState({
+                        isLoaded: true,
+                        series: [{data:candlestickFormat}]
+                    });
+                },
+                // Note: it's important to handle errors here
+                // instead of a catch() block so that we don't swallow
+                // exceptions from actual bugs in components.
+                (error) => {
+                   /* this.setState({
+                        isLoaded: true,
+                        error
+                    });*/
+                }
+            )
+    }
+
 render() {
     return (
         <div>
