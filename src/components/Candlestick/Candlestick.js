@@ -15,10 +15,21 @@ options: {
         type: 'datetime'
     },
     yaxis: {
+        labels: {
+            formatter: function (y) {
+                return '$' + (y).toLocaleString('en');
+        },
         tooltip: {
-            enabled: true
+            enabled: true,
+            y: {
+                formatter: function (y) {
+                return '$' + (y).toLocaleString('en');
+            }
         }
+        },
+        
     }
+}
 },
 style: {
     background: '#000',
@@ -45,10 +56,10 @@ fetch("https://api.coincap.io/v2/candles?exchange=poloniex&interval=d1&baseId=bi
             let coinData = result.data.slice(-90);
 
             coinData.forEach(function (d) {
-                d.open = Math.round(d.open * 100) / 100;
-                d.high = Math.round(d.high * 100) / 100;;
-                d.low = Math.round(d.low * 100) / 100;;
-                d.close = Math.round(d.close * 100) / 100;;
+                d.open = Math.round(d.open * 10000) / 10000;
+                d.high = Math.round(d.high * 10000) / 10000;
+                d.low = Math.round(d.low * 10000) / 10000;
+                d.close = Math.round(d.close * 10000) / 10000;
             });
 
             let candlestickFormat = coinData.map(function (d) {
@@ -159,10 +170,10 @@ fetch("https://api.coincap.io/v2/candles?exchange=poloniex&interval=d1&baseId=ri
             let coinData = result.data.slice(-90);
 
             coinData.forEach(function (d) {
-                d.open = Math.round(d.open * 100) / 100;
-                d.high = Math.round(d.high * 100) / 100;;
-                d.low = Math.round(d.low * 100) / 100;;
-                d.close = Math.round(d.close * 100) / 100;;
+                d.open = Math.round(d.open * 10000) / 10000;
+                d.high = Math.round(d.high * 10000) / 10000;
+                d.low = Math.round(d.low * 10000) / 10000;
+                d.close = Math.round(d.close * 10000) / 10000;
             });
 
             let candlestickFormat = coinData.map(function (d) {
@@ -195,18 +206,19 @@ changeHandler = (e)=>{
 keySubmit = (e)=>{
     if (e.keyCode == 13) {
         console.log('value', e.target.value);
-        fetch("https://api.coincap.io/v2/candles?exchange=poloniex&interval=d1&baseId="+this.state.inputCoin+"&quoteId=tether")
+        fetch("https://api.coincap.io/v2/candles?exchange=binance&interval=d1&baseId="+this.state.inputCoin+"&quoteId=tether")
             .then(res => res.json())
             .then(
                 (result) => {
 
                     let coinData = result.data.slice(-90);
+                    if(coinData[0] != undefined){
 
                     coinData.forEach(function (d) {
-                        d.open = Math.round(d.open * 100) / 100;
-                        d.high = Math.round(d.high * 100) / 100;;
-                        d.low = Math.round(d.low * 100) / 100;;
-                        d.close = Math.round(d.close * 100) / 100;;
+                        d.open = Math.round(d.open * 10000) / 10000;
+                        d.high = Math.round(d.high * 10000) / 10000;
+                        d.low = Math.round(d.low * 10000) / 10000;
+                        d.close = Math.round(d.close * 10000) / 10000;
                     });
 
                     let candlestickFormat = coinData.map(function (d) {
@@ -221,7 +233,45 @@ keySubmit = (e)=>{
                         series: [{ data: candlestickFormat }],
                         options: { title: { text: this.state.inputCoin + '-USD' } }
                     });
+                }else{
+                        fetch("https://api.coincap.io/v2/candles?exchange=bittrex&interval=d1&baseId="+this.state.inputCoin+"&quoteId=tether")
+                            .then(res => res.json())
+                            .then(
+                                (result) => {
+
+                                    let coinData = result.data.slice(-90);
+
+                                    coinData.forEach(function (d) {
+                                        d.open = Math.round(d.open * 10000) / 10000;
+                                        d.high = Math.round(d.high * 10000) / 10000;
+                                        d.low = Math.round(d.low * 10000) / 10000;
+                                        d.close = Math.round(d.close * 10000) / 10000;
+                                    });
+
+                                    let candlestickFormat = coinData.map(function (d) {
+                                        return {
+                                            x: new Date(d.period),
+                                            y: [d.open, d.high, d.low, d.close]
+                                        }
+                                    })
+                                    console.log(candlestickFormat);
+                                    this.setState({
+                                        isLoaded: true,
+                                        series: [{ data: candlestickFormat }],
+                                        options: { title: { text: this.state.inputCoin + '-USD'  } }
+                                    });
+                                },
+
+                                (error) => {
+                                    this.setState({
+                                        isLoaded: true,
+                                        error
+                                    });
+                                }
+                            )
+                }
                 },
+            
 
                 (error) => {
                     this.setState({
