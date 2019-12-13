@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import apexcharts from "react-apexcharts"
 import ReactApexChart from "react-apexcharts";
+import styles from './Candlestick.module.css';
 
 class CandleStickChart extends Component {
 
@@ -10,7 +11,7 @@ class CandleStickChart extends Component {
         this.state = {
             options: {
                 title: {
-                    text: 'CandleStick Chart',
+                    text: 'BTC-USD',
                     align: 'left'
                 },
                 xaxis: {
@@ -20,6 +21,17 @@ class CandleStickChart extends Component {
                     tooltip: {
                         enabled: true
                     }
+                }
+            },
+            style: {
+                background: '#000',
+                color: '#777',
+                fontSize: '12px',
+                padding: {
+                    left: 10,
+                    right: 10,
+                    top: 10,
+                    bottom: 10
                 }
             },
             series: [{
@@ -271,8 +283,8 @@ class CandleStickChart extends Component {
     render() {
         return (
             <div>
-                <div id="chart">
-                    <ReactApexChart options={this.state.options} series={this.state.series} type="candlestick" height="350" />
+                <div id="chart" className={styles.CandleStick}>
+                    <ReactApexChart options={this.state.options} series={this.state.series} type="candlestick" height="500" />
                 </div>
                 <div id="html-dist">
                 </div>
