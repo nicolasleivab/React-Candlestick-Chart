@@ -8,46 +8,20 @@ const boxStyle = {
     display: 'flex',
     justifyContent: 'center',
 };
-// options template
-const top100Coins = [];
 
 class AutocompleteUI extends Component{
-
-// Fetch Top 100 coins from CoinCap
-componentWillMount(){
-    fetch("https://api.coincap.io/v2/assets")
-        .then(res => res.json())
-        .then(
-            (result) => {
-                const coins = result.data;
-                coins.forEach(e => {
-                    console.log(e.id)
-                    let newObj = {id: e.id, name: e.name}
-                    top100Coins.push(newObj)
-                });
-            },
-
-            (error) => {
-                this.setState({
-                    isLoaded: true,
-                    error
-                });
-            }
-        )
-        
-}
 
 render(){
 return (
     <div style={boxStyle}>
     <Autocomplete
         id="crypto-autocomplete"
-        options={top100Coins}
-        getOptionLabel={option => option.id}
+        options={this.props.top100Coins}
+        getOptionLabel={option => option.name}
         style={{ width: 350 }}
         onKeyDown={this.props.keySubmit}
         renderInput={params => (
-            <TextField {...params} label="Search by ID" variant="outlined" fullWidth />
+            <TextField {...params} label="Search by name" variant="outlined" fullWidth />
             
         )}
     />

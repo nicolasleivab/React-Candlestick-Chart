@@ -3,13 +3,18 @@ import ReactApexChart from "react-apexcharts";
 import styles from './Candlestick.module.css';
 import AutocompleteUI from '../Autocomplete/Autocomplete';
 
+// options template
+const top100Coins = [];
+
 class CandleStickChart extends Component {
 
 state = {
-inputCoin:'',
+// options template
+top100Coins: [],
+//chart settings
 options: {
     title: {
-        text: 'BTC-USD',
+        text: 'BTC-USDT',
         align: 'left'
     },
     xaxis: {
@@ -46,6 +51,35 @@ style: {
 series: [{data:[{}]
 
 }]
+}
+
+// Fetch Top 100 coins from CoinCap
+componentWillMount(){
+    fetch("https://api.coincap.io/v2/assets")
+        .then(res => res.json())
+        .then(
+            (result) => {
+                const coins = result.data;
+                coins.forEach(e => {
+                    console.log(e.id)
+                    let newObj = {id: e.id, name: e.name, symbol: e.symbol}
+                    top100Coins.push(newObj)
+                });
+                let updatedCoins = [...top100Coins] // copy array to set state in an immutable fashion
+
+                this.setState({
+                    top100Coins: updatedCoins
+                })
+            },
+
+            (error) => {
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+            }
+        )
+        
 }
 
 // Default first render (bitcoin)
@@ -86,12 +120,17 @@ fetch("https://api.coincap.io/v2/candles?exchange=poloniex&interval=d1&baseId=bi
     )
 }
 
-
+//onkey handler for the input 
 keySubmit = (e)=>{
     if (e.keyCode == 13) {
         
-        let inputSearch = document.getElementById("crypto-autocomplete").value;
-        console.log('value', e.target.value);
+        let inputName = document.getElementById("crypto-autocomplete").value;
+        //check if the input is a valid crypto name
+        if (top100Coins.some(e => e.name == inputName)){
+
+        let inputFilter = top100Coins.filter(e => e.name == inputName);
+        let inputSearch = inputFilter[0]['id'];
+        console.log('value', inputFilter);
         console.log('value', inputSearch);
         fetch("https://api.coincap.io/v2/candles?exchange=binance&interval=d1&baseId="+inputSearch+"&quoteId=tether")
             .then(res => res.json())
@@ -115,10 +154,11 @@ keySubmit = (e)=>{
                         }
                     })
                     console.log(candlestickFormat);
+                    // set state to render chart with new data
                     this.setState({
                         isLoaded: true,
                         series: [{ data: candlestickFormat }],
-                        options: { title: { text: inputSearch + '-USD' } }
+                        options: { title: { text: inputFilter[0]['symbol'] + '-USDT' } }
                     });
                 }else{
                         fetch("https://api.coincap.io/v2/candles?exchange=okex&interval=d1&baseId="+inputSearch+"&quoteId=tether")
@@ -130,8 +170,8 @@ keySubmit = (e)=>{
 
                                     if (coinData[0] == undefined) {
                                     alert('No data available for this coin for the time being')
-                                    window.location.href = "index.html";
                                     }else{console.log('ok')}
+                                    //Format data
                                     coinData.forEach(function (d) {
                                         d.open = Math.round(d.open * 10000) / 10000;
                                         d.high = Math.round(d.high * 10000) / 10000;
@@ -146,10 +186,11 @@ keySubmit = (e)=>{
                                         }
                                     })
                                     console.log(candlestickFormat);
+                                    // set state to render chart with new data
                                     this.setState({
                                         isLoaded: true,
                                         series: [{ data: candlestickFormat }],
-                                        options: { title: { text: inputSearch + '-USD'  } }
+                                        options: { title: { text: inputFilter[0]['symbol'] + '-USDT'  } }
                                     });
                                 },
                                 
@@ -171,7 +212,7 @@ keySubmit = (e)=>{
                     });
                 }
             )
-            
+        }else{alert('Please input a valid crypto')}
     }
 }
 
@@ -179,7 +220,7 @@ render() {
     return (
         <div>
             <div>
-                <AutocompleteUI keySubmit={this.keySubmit}/>
+                <AutocompleteUI keySubmit={this.keySubmit} top100Coins={this.state.top100Coins}/>
             </div>
             <div id="chart" className={styles.CandleStick}>
                 <ReactApexChart options={this.state.options} series={this.state.series} type="candlestick" height="500" />
