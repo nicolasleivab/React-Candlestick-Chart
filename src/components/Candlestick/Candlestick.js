@@ -48,6 +48,7 @@ series: [{data:[{}]
 }]
 }
 
+// Default first render (bitcoin)
 componentDidMount() {
 fetch("https://api.coincap.io/v2/candles?exchange=poloniex&interval=d1&baseId=bitcoin&quoteId=tether")
     .then(res => res.json())
@@ -85,9 +86,6 @@ fetch("https://api.coincap.io/v2/candles?exchange=poloniex&interval=d1&baseId=bi
     )
 }
 
-changeHandler = (e)=>{
-        this.setState({ inputCoin: e.target.value });
-}
 
 keySubmit = (e)=>{
     if (e.keyCode == 13) {
@@ -177,11 +175,7 @@ render() {
     return (
         <div>
             <div>
-                <AutocompleteUI
-                    inputCoin={this.state.inputCoin}
-                    keySubmit={this.keySubmit}
-                    changeHandler={this.changeHandler}
-                />
+                <AutocompleteUI keySubmit={this.keySubmit}/>
             </div>
             <div id="chart" className={styles.CandleStick}>
                 <ReactApexChart options={this.state.options} series={this.state.series} type="candlestick" height="500" />
