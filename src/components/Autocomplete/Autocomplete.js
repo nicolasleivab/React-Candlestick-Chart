@@ -2,10 +2,10 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
-const ComboBox = (props)=>{
+const AutocompleteUI = (props)=>{
     return (
         <Autocomplete
-            id="crypto autocomplete"
+            id="crypto-autocomplete"
             options={top100Coins}
             getOptionLabel={option => option.id}
             style={{ width: 300 }}
@@ -28,4 +28,4 @@ const top100Coins = [
     { id: 'ripple', name: 'XRP' },
 ];
 
-export default ComboBox;
+export default AutocompleteUI;

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import ReactApexChart from "react-apexcharts";
-import Autocomplete from "../Autocomplete/Autocomplete";
 import styles from './Candlestick.module.css';
-import ComboBox from '../Autocomplete/Autocomplete';
+import AutocompleteUI from '../Autocomplete/Autocomplete';
 
 class CandleStickChart extends Component {
 
@@ -92,8 +91,11 @@ changeHandler = (e)=>{
 
 keySubmit = (e)=>{
     if (e.keyCode == 13) {
+        
+        let inputSearch = document.getElementById("crypto-autocomplete").value;
         console.log('value', e.target.value);
-        fetch("https://api.coincap.io/v2/candles?exchange=binance&interval=d1&baseId="+this.state.inputCoin+"&quoteId=tether")
+        console.log('value', inputSearch);
+        fetch("https://api.coincap.io/v2/candles?exchange=binance&interval=d1&baseId="+inputSearch+"&quoteId=tether")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -118,10 +120,10 @@ keySubmit = (e)=>{
                     this.setState({
                         isLoaded: true,
                         series: [{ data: candlestickFormat }],
-                        options: { title: { text: this.state.inputCoin + '-USD' } }
+                        options: { title: { text: inputSearch + '-USD' } }
                     });
                 }else{
-                        fetch("https://api.coincap.io/v2/candles?exchange=bittrex&interval=d1&baseId="+this.state.inputCoin+"&quoteId=tether")
+                        fetch("https://api.coincap.io/v2/candles?exchange=bittrex&interval=d1&baseId="+inputSearch+"&quoteId=tether")
                             .then(res => res.json())
                             .then(
                                 (result) => {
@@ -145,7 +147,7 @@ keySubmit = (e)=>{
                                     this.setState({
                                         isLoaded: true,
                                         series: [{ data: candlestickFormat }],
-                                        options: { title: { text: this.state.inputCoin + '-USD'  } }
+                                        options: { title: { text: inputSearch + '-USD'  } }
                                     });
                                 },
                                 
@@ -175,12 +177,11 @@ render() {
     return (
         <div>
             <div>
-                <ComboBox
+                <AutocompleteUI
                     inputCoin={this.state.inputCoin}
                     keySubmit={this.keySubmit}
                     changeHandler={this.changeHandler}
                 />
-                <input value={this.state.inputCoin} onKeyDown={this.keySubmit} onChange={this.changeHandler} placeholder='Search by name'/>
             </div>
             <div id="chart" className={styles.CandleStick}>
                 <ReactApexChart options={this.state.options} series={this.state.series} type="candlestick" height="500" />
