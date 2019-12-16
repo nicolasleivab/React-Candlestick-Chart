@@ -121,13 +121,17 @@ keySubmit = (e)=>{
                         options: { title: { text: inputSearch + '-USD' } }
                     });
                 }else{
-                        fetch("https://api.coincap.io/v2/candles?exchange=bittrex&interval=d1&baseId="+inputSearch+"&quoteId=tether")
+                        fetch("https://api.coincap.io/v2/candles?exchange=okex&interval=d1&baseId="+inputSearch+"&quoteId=tether")
                             .then(res => res.json())
                             .then(
                                 (result) => {
 
                                     let coinData = result.data.slice(-90);
 
+                                    if (coinData[0] == undefined) {
+                                    alert('No data available for this coin for the time being')
+                                    window.location.href = "index.html";
+                                    }else{console.log('ok')}
                                     coinData.forEach(function (d) {
                                         d.open = Math.round(d.open * 10000) / 10000;
                                         d.high = Math.round(d.high * 10000) / 10000;

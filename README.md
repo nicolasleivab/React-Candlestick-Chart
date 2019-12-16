@@ -1,5 +1,25 @@
 # React Candlestick Chart
 
+Search any of the top 100 cryptocurrencies and pull up to date data from CoinCap API to display in an interactive react candlestick chart.
+<br />
+<p align="center"><a href="https://react-candlestickchart.netlify.com">Demo</a></p>
+
+## Built With
+
+* [React](https://reactjs.org)
+* [ApexCharts](https://apexcharts.com/)
+* [MaterialUI](https://material-ui.com/) 
+
+## Versioning
+
+* [Git](https://git-scm.com) is used for version control.
+
+## Authors
+
+* **Nicolás Leiva Büchi** - [nicolasleivab](https://github.com/nicolasleivab)
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

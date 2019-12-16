@@ -47,9 +47,7 @@ return (
         style={{ width: 350 }}
         onKeyDown={this.props.keySubmit}
         renderInput={params => (
-            <TextField {...params} label="Search by ID" variant="outlined" fullWidth 
-                onKeyDown={this.props.keySubmit}
-            />
+            <TextField {...params} label="Search by ID" variant="outlined" fullWidth />
             
         )}
     />
