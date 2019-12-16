@@ -61,9 +61,11 @@ componentWillMount(){
             (result) => {
                 const coins = result.data;
                 coins.forEach(e => {
-                    console.log(e.id)
+                    //exclude tether
+                    if(e.id != 'tether'){
                     let newObj = {id: e.id, name: e.name, symbol: e.symbol}
                     top100Coins.push(newObj)
+                    }
                 });
                 let updatedCoins = [...top100Coins] // copy array to set state in an immutable fashion
 
@@ -160,7 +162,7 @@ keySubmit = (e)=>{
                         series: [{ data: candlestickFormat }],
                         options: { title: { text: inputFilter[0]['symbol'] + '-USDT' } }
                     });
-                }else{
+                }else{ // use another exchange if the coin is not listed in the first one
                         fetch("https://api.coincap.io/v2/candles?exchange=okex&interval=d1&baseId="+inputSearch+"&quoteId=tether")
                             .then(res => res.json())
                             .then(
