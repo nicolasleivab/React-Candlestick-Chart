@@ -11,6 +11,8 @@ class CandleStickChart extends Component {
 state = {
 // options template
 top100Coins: [],
+//error message
+errorMsg: '',
 //chart settings
 options: {
     title: {
@@ -140,6 +142,10 @@ keySubmit = (e)=>{
                 (result) => {
 
                     let coinData = result.data.slice(-90);
+                    //restart errorMsg
+                    this.setState({
+                        errorMsg: ''
+                    });
                     if(coinData[0] != undefined){
 
                     coinData.forEach(function (d) {
@@ -169,10 +175,14 @@ keySubmit = (e)=>{
                                 (result) => {
 
                                     let coinData = result.data.slice(-90);
-
+                                    this.setState({
+                                        errorMsg: ''
+                                    });
                                     if (coinData[0] == undefined) {
-                                    alert('No data available for this coin for the time being')
-                                    }else{console.log('ok')}
+                                        this.setState({
+                                            errorMsg: 'No data available for the time being'
+                                        });
+                                    }
                                     //Format data
                                     coinData.forEach(function (d) {
                                         d.open = Math.round(d.open * 10000) / 10000;
@@ -214,7 +224,11 @@ keySubmit = (e)=>{
                     });
                 }
             )
-        }else{alert('Please input a valid crypto')}
+        }else{
+            this.setState({
+                errorMsg: 'Please input a valid name'
+            });
+        }
     }
 }
 
@@ -223,6 +237,7 @@ render() {
         <div>
             <div>
                 <AutocompleteUI keySubmit={this.keySubmit} top100Coins={this.state.top100Coins}/>
+                <i>{this.state.errorMsg}</i>
             </div>
             <div id="chart" className={styles.CandleStick}>
                 <ReactApexChart options={this.state.options} series={this.state.series} type="candlestick" height="500" />
