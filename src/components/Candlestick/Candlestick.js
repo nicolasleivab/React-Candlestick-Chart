@@ -88,6 +88,9 @@ componentWillMount(){
 
 // Default first render (bitcoin)
 componentDidMount() {
+this.setState({
+        errorMsg: 'Loading...'
+});
 fetch("https://api.coincap.io/v2/candles?exchange=poloniex&interval=d1&baseId=bitcoin&quoteId=tether")
     .then(res => res.json())
     .then(
@@ -111,7 +114,8 @@ fetch("https://api.coincap.io/v2/candles?exchange=poloniex&interval=d1&baseId=bi
             console.log(candlestickFormat);
             this.setState({
                 isLoaded: true,
-                series: [{data:candlestickFormat}]
+                series: [{data:candlestickFormat}],
+                errorMsg: ''
             });
         },
 
@@ -131,7 +135,9 @@ keySubmit = (e)=>{
         let inputName = document.getElementById("crypto-autocomplete").value;
         //check if the input is a valid crypto name
         if (top100Coins.some(e => e.name == inputName)){
-
+        this.setState({
+                errorMsg: 'Loading...'
+        });
         let inputFilter = top100Coins.filter(e => e.name == inputName);
         let inputSearch = inputFilter[0]['id'];
         console.log('value', inputFilter);
