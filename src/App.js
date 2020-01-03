@@ -9,7 +9,7 @@ class App extends Component {
       <div className={styles.Nav}>React Candlestick Chart</div>
       <Layout>
       </Layout>
-      <div>&copy; 2019 Nicolás Leiva Büchi</div>
+      <div>&copy; 2020 Nicolás Leiva Büchi</div>
     </div>
   );
   }
